@@ -1,10 +1,12 @@
 # S3 bucket for website hosting
 resource "aws_s3_bucket" "website" {
-  bucket = var.domain_name
+  provider = aws.ap_southeast_2
+  bucket   = var.domain_name
 }
 
 resource "aws_s3_bucket_public_access_block" "website" {
-  bucket = aws_s3_bucket.website.id
+  provider = aws.ap_southeast_2
+  bucket   = aws_s3_bucket.website.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -13,7 +15,8 @@ resource "aws_s3_bucket_public_access_block" "website" {
 }
 
 resource "aws_s3_bucket_website_configuration" "website" {
-  bucket = aws_s3_bucket.website.id
+  provider = aws.ap_southeast_2
+  bucket   = aws_s3_bucket.website.id
 
   index_document {
     suffix = "index.html"
@@ -25,7 +28,8 @@ resource "aws_s3_bucket_website_configuration" "website" {
 }
 
 resource "aws_s3_bucket_policy" "website" {
-  bucket = aws_s3_bucket.website.id
+  provider = aws.ap_southeast_2
+  bucket   = aws_s3_bucket.website.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -33,7 +37,9 @@ resource "aws_s3_bucket_policy" "website" {
       {
         Sid       = "PublicReadGetObject"
         Effect    = "Allow"
-        Principal = "*"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
         Action    = "s3:GetObject"
         Resource  = "${aws_s3_bucket.website.arn}/*"
         Condition = {
