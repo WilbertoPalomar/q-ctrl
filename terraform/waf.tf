@@ -26,8 +26,8 @@ resource "aws_wafv2_web_acl" "website" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                 = "RateLimitRule"
-      sampled_requests_enabled    = true
+      metric_name                = "RateLimitRule"
+      sampled_requests_enabled   = true
     }
 
     action {
@@ -53,8 +53,8 @@ resource "aws_wafv2_web_acl" "website" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                 = "CommonRuleSetMetric"
-      sampled_requests_enabled    = true
+      metric_name                = "CommonRuleSetMetric"
+      sampled_requests_enabled   = true
     }
 
     action {
@@ -80,8 +80,8 @@ resource "aws_wafv2_web_acl" "website" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                 = "KnownBadInputsRuleSetMetric"
-      sampled_requests_enabled    = true
+      metric_name                = "KnownBadInputsRuleSetMetric"
+      sampled_requests_enabled   = true
     }
 
     action {
@@ -91,7 +91,7 @@ resource "aws_wafv2_web_acl" "website" {
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                 = "WebACL"
-    sampled_requests_enabled    = true
+    metric_name                = "WebACL"
+    sampled_requests_enabled   = true
   }
 }

@@ -35,13 +35,13 @@ resource "aws_s3_bucket_policy" "website" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "PublicReadGetObject"
-        Effect    = "Allow"
+        Sid    = "PublicReadGetObject"
+        Effect = "Allow"
         Principal = {
           Service = "cloudfront.amazonaws.com"
         }
-        Action    = "s3:GetObject"
-        Resource  = "${aws_s3_bucket.website.arn}/*"
+        Action   = "s3:GetObject"
+        Resource = "${aws_s3_bucket.website.arn}/*"
         Condition = {
           StringEquals = {
             "AWS:SourceArn" = aws_cloudfront_distribution.website.arn
@@ -64,10 +64,8 @@ resource "aws_cloudfront_origin_access_control" "website" {
 }
 
 # Use existing wildcard SSL certificate
-data "aws_acm_certificate" "wildcard" {
-  provider = aws.us_east_1
-  domain   = "*.arbitra.io"
-  statuses = ["ISSUED"]
+locals {
+  wildcard_cert_arn = "arn:aws:acm:us-east-1:643990739293:certificate/df74d752-fef8-4407-ac19-650c82b18800"
 }
 
 # CloudFront Distribution
@@ -111,12 +109,12 @@ resource "aws_cloudfront_distribution" "website" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = data.aws_acm_certificate.wildcard.arn
+    acm_certificate_arn      = local.wildcard_cert_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
-  web_acl_id = aws_wafv2_web_acl.website.arn
+  # web_acl_id = aws_wafv2_web_acl.website.arn
 
   custom_error_response {
     error_code         = 404
