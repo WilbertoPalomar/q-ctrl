@@ -56,6 +56,10 @@ resource "aws_wafv2_web_acl" "website" {
       metric_name                 = "CommonRuleSetMetric"
       sampled_requests_enabled    = true
     }
+
+    action {
+      allow {}
+    }
   }
 
   # AWS Managed Rules - Known Bad Inputs
@@ -78,6 +82,10 @@ resource "aws_wafv2_web_acl" "website" {
       cloudwatch_metrics_enabled = true
       metric_name                 = "KnownBadInputsRuleSetMetric"
       sampled_requests_enabled    = true
+    }
+
+    action {
+      allow {}
     }
   }
 
